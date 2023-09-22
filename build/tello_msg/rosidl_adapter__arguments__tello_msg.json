@@ -1,8 +1,0 @@
-{
-  "package_name": "tello_msg",
-  "non_idl_tuples": [
-    "/home/arnaud.ville/tello-ros2/workspace/src/tello_msg:msg/TelloStatus.msg",
-    "/home/arnaud.ville/tello-ros2/workspace/src/tello_msg:msg/TelloID.msg",
-    "/home/arnaud.ville/tello-ros2/workspace/src/tello_msg:msg/TelloWifiConfig.msg"
-  ]
-}

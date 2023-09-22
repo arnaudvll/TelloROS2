@@ -1,1 +1,0 @@
-/home/arnaud.ville/tello-ros2/build/tello_msg/ament_cmake_python/tello_msg/tello_msg.egg-info/dependency_links.txt

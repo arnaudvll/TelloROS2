@@ -1,1 +1,0 @@
-/home/arnaud.ville/tello-ros2/build/tello_msg/rosidl_generator_py/tello_msg/msg/_tello_wifi_config.py

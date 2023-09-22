@@ -1,3 +1,0 @@
-[console_scripts]
-tello = tello.node:main
-

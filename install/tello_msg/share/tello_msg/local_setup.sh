@@ -1,1 +1,0 @@
-/home/arnaud.ville/tello-ros2/build/tello_msg/ament_cmake_environment_hooks/local_setup.sh
