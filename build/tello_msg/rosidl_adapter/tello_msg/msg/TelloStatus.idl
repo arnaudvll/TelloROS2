@@ -1,0 +1,61 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from tello_msg/msg/TelloStatus.msg
+// generated code does not contain a copyright notice
+
+#include "geometry_msgs/msg/Vector3.idl"
+
+module tello_msg {
+  module msg {
+    @verbatim (language="comment", text=
+      "Acceleration from IMU")
+    struct TelloStatus {
+      geometry_msgs::msg::Vector3 acceleration;
+
+      @verbatim (language="comment", text=
+        "Speed from IMU")
+      geometry_msgs::msg::Vector3 speed;
+
+      @verbatim (language="comment", text=
+        "Altitude of the drone from sensor")
+      int32 barometer;
+
+      int32 distance_tof;
+
+      @verbatim (language="comment", text=
+        "Percentage of battery left")
+      uint8 battery;
+
+      @verbatim (language="comment", text=
+        "Time the motors have been active in seconds")
+      int32 fligth_time;
+
+      @verbatim (language="comment", text=
+        "Highest temperature in celsium")
+      int32 highest_temperature;
+
+      @verbatim (language="comment", text=
+        "Lowest temperature in celsium")
+      int32 lowest_temperature;
+
+      @verbatim (language="comment", text=
+        "Temperature in celsium")
+      float temperature;
+
+      @verbatim (language="comment", text=
+        "Pitch in degrees")
+      int32 pitch;
+
+      @verbatim (language="comment", text=
+        "Roll in degrees")
+      int32 roll;
+
+      @verbatim (language="comment", text=
+        "Yaw in degrees")
+      int32 yaw;
+
+      @verbatim (language="comment", text=
+        "Wi-Fi SNR")
+      string wifi_snr;
+    };
+  };
+};
