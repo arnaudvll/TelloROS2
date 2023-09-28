@@ -20,7 +20,7 @@ class Control(Node):
         self.inAir = False
 
     def listener_callback(self, msg):
-        self.get_logger().info('I heard: "%s"' % msg.buttons)
+        self.get_logger().info('I heard: "%s"' % msg.axes)
         if msg.buttons[3] == 1 and not self.inAir:
             self.publisher_ = self.create_publisher(Empty, 'takeoff', 10)
             self.publisher_.publish(Empty())
@@ -51,14 +51,19 @@ class Control(Node):
             self.publisher_.publish(String(data = 'r'))
             time.sleep(1)
 
-        elif msg.buttons[4] == 1:
+        elif self.inAir:
+            ### Controle des mouvements lineaires verticaux (up and down) ###
+
+            coefLeftRight= - msg.axes[0]
+            coefFrontBack = msg.axes[1]
+            zAxisMovement = - (- msg.axes[2] + 1) / 2 if msg.axes[2] != 1 else (- msg.axes[5] + 1) / 2
+            coefZLeftRight= - msg.axes[3]
+
             self.publisher_ = self.create_publisher(Twist, 'control', 10)
-            self.publisher_.publish(Twist(linear = Vector3(x = 0.0, y = 0.0, z = -20.0), angular = Vector3(x = 0.0, y = 0.0, z = 0.0)))
-            time.sleep(1)
-        elif msg.buttons[5] == 1:
-            self.publisher_ = self.create_publisher(Twist, 'control', 10)
-            self.publisher_.publish(Twist(linear = Vector3(x = 0.0, y = 0.0, z = 20.0), angular = Vector3(x = 0.0, y = 0.0, z = 0.0)))
-            time.sleep(1)
+            self.publisher_.publish(Twist(linear = Vector3(x = 50.0 * coefLeftRight, y = 50.0 * coefFrontBack, z = 50.0 * zAxisMovement), angular = Vector3(x = 0.0, y = 0.0, z = 100.0 * coefZLeftRight)))
+            time.sleep(0.001)
+
+
 
 
 def main(args=None):
