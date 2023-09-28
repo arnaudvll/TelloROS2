@@ -1,0 +1,3 @@
+int64 drone_mode
+---
+bool status

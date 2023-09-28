@@ -25,7 +25,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'control = dev_drone.control:main'
+            'control = dev_drone.control:main',
+            'tello_behavior = dev_drone.tello_behavior:main'
         ],
     },
 )

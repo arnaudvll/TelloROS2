@@ -20,7 +20,7 @@ class Control(Node):
         self.inAir = False
 
     def listener_callback(self, msg):
-        self.get_logger().info('I heard: "%s"' % msg.axes)
+        #self.get_logger().info('I heard: "%s"' % msg.axes)
         if msg.buttons[3] == 1 and not self.inAir:
             self.publisher_ = self.create_publisher(Empty, 'takeoff', 10)
             self.publisher_.publish(Empty())
