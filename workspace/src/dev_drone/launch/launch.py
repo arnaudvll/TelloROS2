@@ -26,11 +26,20 @@ def generate_launch_description():
         Node(
             package='tello',
             executable='tello',
-            name='tello'
+            name='tello',
+            remappings=[
+                ('/image_raw', '/image'),
+            ],
+            
         ),
         Node(
             package='joy',
             executable='joy_node',
             name='joy_node'
         ),
+        Node(
+            package='zbar_ros',
+            executable='barcode_reader',
+            name='barcode_reader'
+        )
     ])
