@@ -21,36 +21,42 @@ from cv_bridge import CvBridge
 class TelloBehavior(Node):
 
     def __init__(self):
-        super().__init__('drone_mode_service')
+        super().__init__('tello_behavior')
+
+        # Création du service permettant le changement de mode du drone
         self.srv = self.create_service(ChangeDroneMode, 'drone_mode', self.drone_mode_callback)
 
+        # Souscription au topic secure_cmd
         self.controlSubscription = self.create_subscription(
             Twist,
             'secure_cmd',
             self.onSecureCmdReceived,
             10)
-        self.controlSubscription  # prevent unused variable warning
+        self.controlSubscription 
 
+        # Souscription au topic secure_flip
         self.flipSubscription = self.create_subscription(
             String,
             'secure_flip',
             self.onSecureFlipReceived,
             10)
-        self.flipSubscription  # prevent unused variable warning
+        self.flipSubscription
 
+        # Souscription au topic barcode
         self.qrCodeSubscription = self.create_subscription(
             String,
             'barcode',
             self.onQrCodeReceived,
             10)
-        self.qrCodeSubscription  # prevent unused variable warning
+        self.qrCodeSubscription
 
+        # Souscription au topic image
         self.imageSubscription = self.create_subscription(
             Image,
             'image',
             self.onImageReceived,
             10)
-        self.imageSubscription  # prevent unused variable warning
+        self.imageSubscription 
 
         self.surveillanceMode = False
         self.manualMode = False
@@ -68,6 +74,7 @@ class TelloBehavior(Node):
         # Set to QR Code Mode at the start
         self.drone_mode = 2
 
+    # Fonction appelée à la suite d'un appel au service drone_mode
     def drone_mode_callback(self, request, response):
         self.drone_mode = request.drone_mode
 
@@ -119,22 +126,26 @@ class TelloBehavior(Node):
         
         return response
     
+    # Fait tourner le drone sur lui-même à vitesse constante
     def surveillanceModeCallback(self):
         while (self.surveillanceMode):
             self.publisher_ = self.create_publisher(Twist, 'control', 10)
             self.publisher_.publish(Twist(linear = Vector3(x = 0.0, y = 0.0, z = 0.0), angular = Vector3(x = 0.0, y = 0.0, z = 40.0)))
             time.sleep(1)
     
+    # Si une commande de déplacement est recue et qu'on est en mode manuel, on transmet la commande au drone
     def onSecureCmdReceived(self, msg):
         if (self.manualMode):
             self.publisher_ = self.create_publisher(Twist, 'control', 10)
             self.publisher_.publish(msg)
 
+    # Si une commande de flip est recue et qu'on est en mode manuel ou spielberg, on transmet la commande au drone
     def onSecureFlipReceived(self, msg):
         if (self.manualMode or self.spielbergMode):
             self.publisher_ = self.create_publisher(String, 'flip', 10)
             self.publisher_.publish(msg)
 
+    # Si un QR-code est visible et qu'on est dans le bon mode, on execute le fonctionnement associé à chaque QR-code
     def onQrCodeReceived(self, msg):
         if (self.qrCodeMode):
             if (msg.data == self.STOP):
@@ -147,6 +158,7 @@ class TelloBehavior(Node):
                 self.publisher_ = self.create_publisher(Twist, 'control', 10)
                 self.publisher_.publish(Twist(linear = Vector3(x = -10.0, y = 0.0, z = 0.0), angular = Vector3(x = 0.0, y = 0.0, z = 0.0)))
     
+    # Fonction appelée pour chaque image renvoyée par la caméra du drone
     def onImageReceived(self, msg):
         if (self.followerMode):
             frame = self.cvBridge.imgmsg_to_cv2(msg)
@@ -154,8 +166,6 @@ class TelloBehavior(Node):
             cv2.imshow("frame", frame)
             key = cv2.waitKey(1) & 0xFF
             
-            
-            #example code from google TODO: link
             qr_decoder = cv2.QRCodeDetector()
         
             # Detect and decode the qrcode
@@ -179,9 +189,8 @@ class TelloBehavior(Node):
                 cv2.imshow("Results", frame)
 
            
-
+    # Fonction utilisée pour faire suivre un QR-code par le drone en mouvements verticaux et horizontaux (TODO)
     def followQrCode(self):
-        self.get_logger().info('actuel xdif "%d"' % self.xDif)
         if (abs(self.xDif) > 20):
             if (abs(self.zDif) > 20):
                 self.publisher_ = self.create_publisher(Twist, 'control', 10)
